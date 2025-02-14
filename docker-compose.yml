@@ -1,0 +1,13 @@
+services:
+  pgsql:
+    container_name: pgsql
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: playlist
+      POSTGRES_PASSWORD: books1234
+      POSTGRES_DB: playlist-books
+    volumes:
+      - ./data:/var/lib/postgresql/data
