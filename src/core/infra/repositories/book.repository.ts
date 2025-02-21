@@ -18,7 +18,6 @@ export class BookRepository extends PrismaService implements Repository<Book> {
 
     async update(entity: Book): Promise<void> {
         const bookData = await BookMap.toPersist(entity);
-        // console.log(bookData);
         
         await this._bookModel().update({
             where: {
@@ -33,13 +32,10 @@ export class BookRepository extends PrismaService implements Repository<Book> {
 
     async delete(entity: Book): Promise<void> {
         const book = await BookMap.toPersist(entity);
-        console.log(book);
         
-        const { id } = book;
-
         await this._bookModel().delete({
             where: {
-                id
+                id: book.id
             }
         });
     }
@@ -47,9 +43,10 @@ export class BookRepository extends PrismaService implements Repository<Book> {
     async findById(id: any): Promise<Book> {
         const dataPrisma = await this._bookModel().findUnique({
             where: {
-                id
+                id: id
             }
         });
+        
         return BookMap.toEntity(dataPrisma);
     }
 

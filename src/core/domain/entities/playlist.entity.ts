@@ -27,6 +27,7 @@ export class Playlist extends GenericEntity<IPlaylist> {
             title: command.title,
             description: command.description,
             author: command.author,
+            createdAt: new Date(),
         });
     }
 

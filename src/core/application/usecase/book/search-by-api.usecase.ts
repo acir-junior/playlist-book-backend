@@ -1,4 +1,4 @@
-import { GoogleBookApiService } from "core/infra/services/google-books/google-books-api.service";
+import { GoogleBooksApiRepository } from "@core/application/repositories/google-books/google-books-api.repository";
 import IUseCase from "../usecase.interface";
 
 export type SearchBookByApi = {
@@ -8,10 +8,10 @@ export type SearchBookByApi = {
 
 export class SearchBookByApiUseCase implements IUseCase<SearchBookByApi> {
     constructor(
-        private readonly _googleBooksApiRepository: GoogleBookApiService
+        private readonly _googleBooksApiRepository: GoogleBooksApiRepository
     ) {}
     
-    async execute(data) {
-        return this._googleBooksApiRepository.search(data.param, data.key);
+    async execute(param) {
+        return this._googleBooksApiRepository.search(param);
     }
 }

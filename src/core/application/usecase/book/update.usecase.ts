@@ -1,6 +1,7 @@
 import { Repository } from "@core/application/repositories/repository.interface";
 import { Book } from "@core/domain/entities/book.entity";
 import IUseCase from "../usecase.interface";
+import { NotFoundException } from "@nestjs/common";
 
 export class UpdateBookUsecase implements IUseCase<any> {
 
@@ -9,15 +10,14 @@ export class UpdateBookUsecase implements IUseCase<any> {
     ) {}
 
     async execute(props: any): Promise<void> {
-        const bookFound = await this._repository.findById(props.id);
+        const { id, ...rest } = props;
+        const bookFound = await this._repository.findById(id);
         
-        console.log(`${JSON.stringify(bookFound)} foi encontrado`);
         if (!bookFound) {
-            throw new Error("Book not found");
+            throw new NotFoundException("Book not found");
         }
         
-        bookFound.updateProps(props);
-        console.log(`${JSON.stringify(bookFound)} foi atualizado`);
+        bookFound.updateProps({ ...rest });
         await this._repository.update(bookFound);
     }
 }

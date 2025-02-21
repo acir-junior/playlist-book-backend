@@ -1,3 +1,3 @@
 export interface GoogleBooksApiRepository {
-    search(param: string, key: string): Promise<any>;
+    search(param: string): Promise<any>;
 }
