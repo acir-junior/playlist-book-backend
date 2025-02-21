@@ -24,6 +24,7 @@ export class BookMap {
             cover: data.cover,
             author: data.author,
             description: data.description,
+            createdAt: data.createdAt,
             updatedAt: data.updatedAt,
             playlistId: data.playlistId,
         }, data.id) : null;

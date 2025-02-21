@@ -16,6 +16,7 @@ describe('GenericEntity', () => {
             name: 'John Doe',
             address: '123 Main St',
             age: 30,
+            createdAt: new Date(),
             updatedAt: new Date(),
         });
     }); 

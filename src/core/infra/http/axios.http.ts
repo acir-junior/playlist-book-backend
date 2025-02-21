@@ -9,6 +9,8 @@ export class AxiosHttp implements IRequester {
     }
 
     async get(url: string): Promise<any> {
+        console.log('url', url);
+        
         const request = await this.app.get(url);
         return await request.data;
     }
