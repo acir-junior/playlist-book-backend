@@ -3,6 +3,7 @@ import { DeleteBookUseCase } from "@core/application/usecase/book/delete.usecase
 import { SearchAllUseCase } from "@core/application/usecase/book/search-all.usecase";
 import { SearchBookByApiUseCase } from "@core/application/usecase/book/search-by-api.usecase";
 import { SearchByIdBookUseCase } from "@core/application/usecase/book/search-by-id.usecase";
+import { UpdateBookUsecase } from "@core/application/usecase/book/update.usecase";
 import { AxiosHttp } from "@core/infra/http/axios.http";
 import { BookRepository } from "@core/infra/repositories/book.repository";
 import { GoogleBookApiService } from "@core/infra/services/google-books/google-books-api.service";
@@ -28,6 +29,7 @@ export class BookModule {
                 'SearchByIdBookUseCase',
                 'SearchAllBookUseCase',
                 'SearchBookByApiUseCase',
+                'UpdateBookUsecase'
             ],
             imports: [GoogleBookApiService],
             module: BookModule,
@@ -69,6 +71,13 @@ export class BookModule {
                                 new AxiosHttp()
                             )
                         );
+                    }
+                },
+                {
+                    inject: [BookRepository],
+                    provide: 'UpdateBookUsecase',
+                    useFactory: (bookRepository: BookRepository) => {
+                        return new UpdateBookUsecase(bookRepository);
                     }
                 }
             ],
