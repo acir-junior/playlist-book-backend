@@ -1,6 +1,7 @@
 import { Repository } from "@core/application/repositories/repository.interface";
 import { PrismaService } from "../services/prisma/prisma.service";
-import { Playlist } from "@prisma/client";
+import { PlaylistMap } from "../mappers/playlist.map";
+import { Playlist } from "@core/domain/entities/playlist.entity";
 
 export class PlaylistRepository extends PrismaService implements Repository<Playlist> {
 
@@ -9,23 +10,49 @@ export class PlaylistRepository extends PrismaService implements Repository<Play
     }
 
     async save(entity: Playlist): Promise<void> {
-        throw new Error("Method not implemented.");
+        const playlist = PlaylistMap.toPersist(entity);
+        await this._playlistModel().create({
+            data: playlist
+        })
     }
 
     async update(entity: Playlist): Promise<void> {
-        throw new Error("Method not implemented.");
+        const playlistData = await PlaylistMap.toPersist(entity);
+
+        await this._playlistModel().update({
+            where: {
+                id: playlistData.id
+            },
+            data: {
+                ...playlistData,
+                updatedAt: new Date()
+            }
+        });
     }
 
     async delete(entity: Playlist): Promise<void> {
-        throw new Error("Method not implemented.");
+        const playlist = await PlaylistMap.toPersist(entity);
+
+        await this._playlistModel().delete({
+            where: {
+                id: playlist.id
+            }
+        });
     }
 
     async findById(id: any): Promise<Playlist> {
-        throw new Error("Method not implemented.");
+        const dataPrisma = await this._playlistModel().findUnique({
+            where: {
+                id: id
+            }
+        });
+
+        return PlaylistMap.toEntity(dataPrisma);
     }
 
     async findAll(): Promise<Playlist[]> {
-        throw new Error("Method not implemented.");
+        const dataPrisma = await this._playlistModel().findMany();
+        return dataPrisma.map(data => PlaylistMap.toEntity(data));
     }
 
 }

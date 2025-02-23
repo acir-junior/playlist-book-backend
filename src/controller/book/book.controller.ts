@@ -8,6 +8,7 @@ import { BookMap } from "@core/infra/mappers/book.map";
 import { Body, Controller, Delete, Get, Inject, Param, Post, Put } from "@nestjs/common";
 import { CreateBookDto } from "./dto/create.dto";
 import { BookByApiMap } from "@core/infra/mappers/book-by-api.map";
+import { UpdateBookDto } from "./dto/update.dto";
 
 @Controller('book')
 export class BookController {
@@ -67,7 +68,7 @@ export class BookController {
     @Put('update/:id')
     async updateBook(
         @Param('id') id: string,
-        @Body() body: any
+        @Body() body: UpdateBookDto
     ) {
         return await this._updateBookUseCase.execute({ id, ...body });
     }
