@@ -3,7 +3,7 @@ import IUseCase from "../usecase.interface";
 import { NotFoundException } from "@nestjs/common";
 import { Playlist } from "@core/domain/entities/playlist.entity";
 
-export class UpdatePlaylistUseCase implements IUseCase<UpdatePlaylistUseCase> {
+export class UpdatePlaylistUseCase implements IUseCase<any> {
 
     constructor(
         private readonly _repository: Repository<Playlist>
