@@ -100,11 +100,10 @@ Para evitar abusos, o projeto conta com um **Rate Limiter**, controlando o núme
 
 Alguns testes estão dentro da pasta core e dentro de suas subpastas, que são testes de dominio (unitários) e integração:
 
-```sh
 Para facilitar a execução dos testes, instale estas extensões:
-**https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest**
-**https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner**
-```
+
+- https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest
+- https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner
 
 ## 🐳 Docker
 
@@ -115,14 +114,10 @@ docker-compose up --build
 ```
 
 ## 📬 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma nova branch (`git checkout -b feature/nova-funcionalidade`)
-3. Faça as alterações necessárias e commit (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Envie para o repositório (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
+- Sugestões e conselhos para melhorar o código e também meus conhecimentos, me mande um e-mail;
+- amjr13@icloud.com
 
 ---
 
-📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [24/02/2025]
+📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [26/02/2025]
 
