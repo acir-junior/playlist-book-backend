@@ -12,4 +12,35 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - playlist-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "${DATABASE_NAME}", "-U", "${DATABASE_USER}"]
+      retries: 3
+      timeout: 5s
+    networks:
+      - playlist-network
+
+  backend:
+    container_name: backend
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      pgsql:
+        condition: service_healthy
+    volumes:
+      - playlist:/app
+    networks:
+      - playlist-network
+
+volumes:
+  playlist-db:
+  playlist:
+
+networks:
+  playlist-network:
+    driver: bridge
+      
