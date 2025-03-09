@@ -1,7 +1,6 @@
 import { Repository } from "@core/application/repositories/repository.interface";
 import IUseCase from "../usecase.interface";
-import { Playlist } from "@prisma/client";
-import { NotFoundException } from "@nestjs/common";
+import { Playlist } from "@core/domain/entities/playlist.entity";
 
 export class DeletePlaylistUseCase implements IUseCase<string> {
     
@@ -12,7 +11,7 @@ export class DeletePlaylistUseCase implements IUseCase<string> {
     async execute(id: string) {
         const playlist = await this._repository.findById(id);
         if (!playlist) {
-            throw new NotFoundException('Playlist not found');
+            throw new Error('Playlist not found');
         }
 
         await this._repository.delete(playlist);

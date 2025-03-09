@@ -1,6 +1,6 @@
-import { Playlist } from "@prisma/client";
-import { Repository } from "@core/application/repositories/repository.interface";
 import IUseCase from "../usecase.interface";
+import { Repository } from "@core/application/repositories/repository.interface";
+import { Playlist } from "@core/domain/entities/playlist.entity";
 
 export class SearchAllUseCase implements IUseCase<Playlist[]> {
 

@@ -1,6 +1,5 @@
 import { Repository } from "@core/application/repositories/repository.interface";
 import IUseCase from "../usecase.interface";
-import { NotFoundException } from "@nestjs/common";
 import { Playlist } from "@core/domain/entities/playlist.entity";
 
 export class UpdatePlaylistUseCase implements IUseCase<any> {
@@ -14,7 +13,7 @@ export class UpdatePlaylistUseCase implements IUseCase<any> {
         const playlistFound = await this._repository.findById(id);
         
         if (!playlistFound) {
-            throw new NotFoundException("Playlist not found");
+            throw new Error("Playlist not found");
         }
         
         playlistFound.updateProps({ ...rest });

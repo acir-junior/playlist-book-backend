@@ -119,5 +119,5 @@ docker-compose up --build
 
 ---
 
-📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [27/02/2025]
+📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [09/03/2025]
 

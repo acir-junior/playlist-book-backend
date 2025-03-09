@@ -1,7 +1,6 @@
 import IUseCase from "../usecase.interface";
 import { Repository } from "@core/application/repositories/repository.interface";
 import { Playlist } from "@core/domain/entities/playlist.entity";
-import { NotFoundException } from "@nestjs/common";
 
 export type SearchBookById = {
     id: string;
@@ -15,7 +14,7 @@ export class SearchPlaylistById implements IUseCase<SearchBookById> {
     async execute(id) {
         const playlist = await this._repository.findById(id);
         if (!playlist) {
-            throw new NotFoundException('Playlist not found');
+            throw new Error('Playlist not found');
         }
 
         return playlist;

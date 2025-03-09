@@ -1,7 +1,6 @@
 import { Repository } from "@core/application/repositories/repository.interface";
 import IUseCase from "../usecase.interface";
 import { Playlist } from "@core/domain/entities/playlist.entity";
-import { NotFoundException } from "@nestjs/common";
 
 export type CreatePlaylist = {
     title: string;
@@ -17,7 +16,7 @@ export class CreatePlaylistUseCase implements IUseCase<CreatePlaylist> {
     async execute(data) {
         const playlist = Playlist.create(data);
         if (!playlist) {
-            throw new NotFoundException('Playlist not found');
+            throw new Error('Playlist not found');
         }
 
         await this._repository.save(playlist);

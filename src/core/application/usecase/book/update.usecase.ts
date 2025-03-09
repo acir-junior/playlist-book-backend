@@ -1,7 +1,6 @@
 import { Repository } from "@core/application/repositories/repository.interface";
 import { Book } from "@core/domain/entities/book.entity";
 import IUseCase from "../usecase.interface";
-import { NotFoundException } from "@nestjs/common";
 
 export class UpdateBookUsecase implements IUseCase<any> {
 
@@ -14,7 +13,7 @@ export class UpdateBookUsecase implements IUseCase<any> {
         const bookFound = await this._repository.findById(id);
         
         if (!bookFound) {
-            throw new NotFoundException("Book not found");
+            throw new Error("Book not found");
         }
         
         bookFound.updateProps({ ...rest });
