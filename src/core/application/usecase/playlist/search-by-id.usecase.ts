@@ -1,9 +1,12 @@
-import { Playlist } from "@prisma/client";
 import IUseCase from "../usecase.interface";
 import { Repository } from "@core/application/repositories/repository.interface";
+import { Playlist } from "@core/domain/entities/playlist.entity";
 import { NotFoundException } from "@nestjs/common";
 
-export class SearchPlaylistById implements IUseCase<Playlist> {
+export type SearchBookById = {
+    id: string;
+}
+export class SearchPlaylistById implements IUseCase<SearchBookById> {
 
     constructor(
         private readonly _repository: Repository<Playlist>

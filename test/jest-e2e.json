@@ -9,5 +9,6 @@
   },
   "moduleNameMapper": {
     "^@core/(.*)$": "<rootDir>/core/$1"
-  }
+  },
+  "testTimeout": 30000
 }

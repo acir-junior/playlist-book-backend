@@ -62,7 +62,6 @@ export class BookController {
     ) {
         const bookFound = await this._searchBookByApiUseCase.execute(param);
         return bookFound.map(book => BookByApiMap.toHttp(book));
-        
     }
 
     @Put('update/:id')

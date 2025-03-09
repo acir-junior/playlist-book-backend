@@ -1,11 +1,11 @@
 import { GenericEntity, IGeneric } from "../generic.entity";
-import { IBook } from "./book.entity";
+import { Book } from "./book.entity";
 
 export interface IPlaylist extends IGeneric {
     title: string;
     description: string;
     author: string;
-    books?: IBook[];
+    books?: Book[];
 }
 
 export class Playlist extends GenericEntity<IPlaylist> {
@@ -20,6 +20,10 @@ export class Playlist extends GenericEntity<IPlaylist> {
 
     get author(): string {
         return this.getProps().author;
+    }
+
+    get books() {
+        return this.getProps().books;
     }
 
     static create(command: IPlaylist): Playlist {

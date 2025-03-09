@@ -44,6 +44,9 @@ export class PlaylistRepository extends PrismaService implements Repository<Play
         const dataPrisma = await this._playlistModel().findUnique({
             where: {
                 id: id
+            },
+            include: {
+                books: true
             }
         });
 
@@ -51,8 +54,13 @@ export class PlaylistRepository extends PrismaService implements Repository<Play
     }
 
     async findAll(): Promise<Playlist[]> {
-        const dataPrisma = await this._playlistModel().findMany();
-        return dataPrisma.map(data => PlaylistMap.toEntity(data));
+        const dataPrisma = await this._playlistModel().findMany({
+            include: {
+                books: true
+            }
+        });
+        
+        return dataPrisma.map(PlaylistMap.toEntity);
     }
 
 }

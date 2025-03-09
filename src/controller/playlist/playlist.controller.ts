@@ -49,7 +49,7 @@ export class PlaylistController {
     @Get('search')
     async searchAllPlaylists() {
         const playlists = await this._searchAllPlaylistUseCase.execute();
-        return playlists.map(playlist => PlaylistMap.toHttp(playlist));
+        return playlists.map(PlaylistMap.toHttp);
     }
 
     @Put('update/:id')
@@ -57,6 +57,6 @@ export class PlaylistController {
         @Param('id') id: string,
         @Body() body: UpdatePlaylistDto
     ) {
-        return await this._updatePlaylistUseCase.execute({id, ...body});
+        return await this._updatePlaylistUseCase.execute({ id, ...body });
     }
 }

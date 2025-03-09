@@ -1,5 +1,10 @@
 import { Playlist } from "@core/domain/entities/playlist.entity";
-import { Playlist as PrismaPlaylist } from "@prisma/client";
+import { Books, Playlist as PrismaPlaylist } from "@prisma/client";
+import { BookMap } from "./book.map";
+
+interface PlaylistJoin extends PrismaPlaylist {
+    books?: Books[]
+}
 
 export class PlaylistMap {
 
@@ -14,17 +19,18 @@ export class PlaylistMap {
         };
     }
 
-    static toEntity(data: PrismaPlaylist): Playlist | null {
+    static toEntity(data: PlaylistJoin): Playlist | null {
         return data ? new Playlist({
             title: data.title,
             description: data.description,
             author: data.author,
             createdAt: data.createdAt,
             updatedAt: data.updatedAt,
+            books: data.books ? data.books.map(BookMap.toEntity) : [],
         }, data.id) : null;
     }
 
-    static toHttp(data: PrismaPlaylist) {
+    static toHttp(data: Playlist) {
         return {
             id: data.id,
             title: data.title,
@@ -32,6 +38,7 @@ export class PlaylistMap {
             author: data.author,
             createdAt: data.createdAt,
             updatedAt: data.updatedAt,
+            books: data.books ? data.books.map(BookMap.toHttp) : [],
         }
     }
 }

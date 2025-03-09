@@ -9,7 +9,6 @@ export class SearchAllUseCase implements IUseCase<Playlist[]> {
     ) {}
 
     async execute(): Promise<Playlist[]> {
-        const playlists = await this._repository.findAll();
-        return playlists;
+        return await this._repository.findAll();
     }
 }
