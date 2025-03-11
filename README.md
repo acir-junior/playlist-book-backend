@@ -120,5 +120,5 @@ docker exec -it backend npx prisma migrate dev
 
 ---
 
-📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [10/03/2025]
+📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [11/03/2025]
 
