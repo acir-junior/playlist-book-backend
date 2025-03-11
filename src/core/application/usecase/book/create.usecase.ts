@@ -22,6 +22,5 @@ export class CreateBookUseCase implements IUseCase<CreateBook> {
         }
 
         await this._repository.save(book);
-        return 'Book created successfully';
     }
 }

@@ -20,6 +20,5 @@ export class CreatePlaylistUseCase implements IUseCase<CreatePlaylist> {
         }
 
         await this._repository.save(playlist);
-        return 'Playlist created successfully';
     }
 }

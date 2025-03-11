@@ -3,10 +3,11 @@ import { DeletePlaylistUseCase } from '@core/application/usecase/playlist/delete
 import { SearchAllUseCase } from '@core/application/usecase/playlist/search-all.usecase';
 import { SearchPlaylistById } from '@core/application/usecase/playlist/search-by-id.usecase';
 import { UpdatePlaylistUseCase } from '@core/application/usecase/playlist/update.usecase';
-import { Body, Controller, Delete, Get, Inject, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Res } from '@nestjs/common';
 import { CreatePlaylistDto } from './dto/create.dto';
 import { PlaylistMap } from '@core/infra/mappers/playlist.map';
 import { UpdatePlaylistDto } from './dto/update.dto';
+import { Response } from 'express';
 
 @Controller('playlist')
 export class PlaylistController {
@@ -26,16 +27,20 @@ export class PlaylistController {
 
     @Post('create')
     async createPlaylist(
-        @Body() body: CreatePlaylistDto
+        @Body() body: CreatePlaylistDto,
+        @Res() res: Response
     ) {
-        return await this._createPlaylistUseCase.execute(body);
+        await this._createPlaylistUseCase.execute(body);
+        return res.status(201).json({ message: 'Playlist criada com sucesso!' });
     }
 
     @Delete('delete/:id')
     async deletePlaylist(
-        @Param('id') id: string
+        @Param('id') id: string,
+        @Res() res: Response
     ) {
-        return await this._deletePlaylistUseCase.execute(id);
+        await this._deletePlaylistUseCase.execute(id);
+        return res.status(200).json({ message: 'Playlist deletada com sucesso!' });
     }
 
     @Get('search/:id')
@@ -55,8 +60,10 @@ export class PlaylistController {
     @Put('update/:id')
     async updatePlaylist(
         @Param('id') id: string,
-        @Body() body: UpdatePlaylistDto
+        @Body() body: UpdatePlaylistDto,
+        @Res() res: Response
     ) {
-        return await this._updatePlaylistUseCase.execute({ id, ...body });
+        await this._updatePlaylistUseCase.execute({ id, ...body });
+        return res.status(200).json({ message: 'Playlist atualizada com sucesso!' });
     }
 }

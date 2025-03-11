@@ -5,10 +5,11 @@ import { SearchBookByApiUseCase } from "@core/application/usecase/book/search-by
 import { SearchByIdBookUseCase } from "@core/application/usecase/book/search-by-id.usecase";
 import { UpdateBookUsecase } from "@core/application/usecase/book/update.usecase";
 import { BookMap } from "@core/infra/mappers/book.map";
-import { Body, Controller, Delete, Get, Inject, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Res } from "@nestjs/common";
 import { CreateBookDto } from "./dto/create.dto";
 import { BookByApiMap } from "@core/infra/mappers/book-by-api.map";
 import { UpdateBookDto } from "./dto/update.dto";
+import { Response } from "express";
 
 @Controller('book')
 export class BookController {
@@ -30,16 +31,20 @@ export class BookController {
 
     @Post('create')
     async createBook(
-        @Body() body: CreateBookDto
+        @Body() body: CreateBookDto,
+        @Res() res: Response
     ) {
-        return await this._createBookUseCase.execute(body);
+        await this._createBookUseCase.execute(body);
+        return res.status(201).json({ message: 'Livro criado com sucesso!' });
     }
 
     @Delete('delete/:id')
     async deleteBook(
-        @Param('id') id: string
+        @Param('id') id: string,
+        @Res() res: Response
     ) {
-        return await this._deleteBookUseCase.execute(id);
+        await this._deleteBookUseCase.execute(id);
+        return res.status(200).json({ message: 'Livro deletado com sucesso!' });
     }
 
     @Get('search/:id')
@@ -67,8 +72,10 @@ export class BookController {
     @Put('update/:id')
     async updateBook(
         @Param('id') id: string,
-        @Body() body: UpdateBookDto
+        @Body() body: UpdateBookDto,
+        @Res() res: Response
     ) {
-        return await this._updateBookUseCase.execute({ id, ...body });
+        await this._updateBookUseCase.execute({ id, ...body });
+        return res.status(200).json({ message: 'Livro atualizado com sucesso!' });
     }
 }
