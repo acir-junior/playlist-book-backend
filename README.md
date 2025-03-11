@@ -111,6 +111,7 @@ O projeto pode ser executado utilizando **Docker**:
 
 ```sh
 docker-compose up --build
+docker exec -it backend npx prisma migrate dev
 ```
 
 ## 📬 Contribuição
@@ -119,5 +120,5 @@ docker-compose up --build
 
 ---
 
-📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [09/03/2025]
+📌 **Autor:** [Acir M. Junior] 📅 **Última atualização:** [10/03/2025]
 
