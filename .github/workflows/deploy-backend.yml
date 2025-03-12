@@ -16,7 +16,7 @@ jobs:
             - name: Criar pacote para envio
               run: tar -czf backend.tar.gz Dockerfile docker-compose.yml src package.json tsconfig.json .env.example
 
-            - name: Enviar pacote para servidor EC2 aws
+            - name: Enviar pacote para servidor EC2 AWS
               env: 
                 SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
                 EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -25,37 +25,43 @@ jobs:
                 printf "%s" "$SSH_PRIVATE_KEY" > private_key.pem
                 chmod 600 private_key.pem
                 scp -i private_key.pem -o StrictHostKeyChecking=no backend.tar.gz $EC2_USER@$EC2_HOST:/home/$EC2_USER/
-            
-            - name: Conectar ao servidor EC2 aws e configurar backend
+
+            - name: Conectar ao servidor EC2 AWS e configurar backend
               env:
                 SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
                 EC2_HOST: ${{ secrets.EC2_HOST }}
                 EC2_USER: ${{ secrets.EC2_USER }}
               run: |
                 ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-                # Navegar para a pasta do backend
-                cd /home/$EC2_USER/
+                
+                # Definir pasta do backend
+                WORKDIR="/home/$EC2_USER/backend"
 
                 # Parar e remover containers existentes
-                docker-compose down
-
+                sudo docker-compose down || true
+                
                 # Remover arquivos antigos e extrair os novos
-                rm -rf backend
-                mkdir backend
-                tar -xzf backend.tar.gz -C backend
-                cd backend
+                sudo rm -rf $WORKDIR
+                sudo mkdir -p $WORKDIR
+                sudo tar -xzf /home/$EC2_USER/backend.tar.gz -C $WORKDIR
+                
+                # Criar o .env com as variáveis de ambiente
+                cat <<EOT | sudo tee $WORKDIR/.env > /dev/null
+                DATABASE_USER=${{ secrets.DATABASE_USER }}
+                DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+                DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+                DATABASE_PORT=${{ secrets.DATABASE_PORT }}
+                DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+                DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"
+                DATABASE_URL=${{ secrets.DATABASE_URL }}
+                GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}
+                EOT
 
-                # Criar o .env com as variáveis de ambiente seguras
-                echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" > .env
-                echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
-                echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
-                echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env
-                echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
-                echo 'DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"' >> .env
-                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-                echo "GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}" >> .env
+                # Ajustar permissões
+                sudo chmod 644 $WORKDIR/.env
+                sudo chown -R $EC2_USER:$EC2_USER $WORKDIR
 
                 # Construir e rodar os containers
-                docker compose up --build -d
-                EOF 
-
+                cd $WORKDIR
+                sudo docker-compose up --build -d
+                EOF
