@@ -45,10 +45,10 @@ jobs:
                               
                 # Remover arquivos antigos e extrair os novos
                 rm -rf backend
-                mkdir -p /home/ubuntu/backend
+                sudo mkdir -p /home/ubuntu/backend
                               
                 # Extrair o arquivo tar.gz
-                tar -xzf backend.tar.gz -C backend
+                sudo tar -xzf backend.tar.gz -C backend
                               
                 # Verificar se o arquivo docker-compose.yml está presente
                 ls -l /home/ubuntu/backend/docker-compose.yml
