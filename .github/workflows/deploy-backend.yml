@@ -34,34 +34,39 @@ jobs:
               run: |
                 ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
                 
-                # Definir pasta do backend
-                WORKDIR="/home/$EC2_USER/backend"
-
+                # Navegar para a pasta do backend
+                cd /home/$EC2_USER/
+                              
+                # Verificar se o arquivo foi transferido corretamente
+                ls -l backend.tar.gz
+                              
                 # Parar e remover containers existentes
-                sudo docker-compose down || true
-                
+                docker-compose down
+                              
                 # Remover arquivos antigos e extrair os novos
-                sudo rm -rf $WORKDIR
-                sudo mkdir -p $WORKDIR
-                sudo tar -xzf /home/$EC2_USER/backend.tar.gz -C $WORKDIR
-                
-                # Criar o .env com as variáveis de ambiente
-                cat <<EOT | sudo tee $WORKDIR/.env > /dev/null
-                DATABASE_USER=${{ secrets.DATABASE_USER }}
-                DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-                DATABASE_HOST=${{ secrets.DATABASE_HOST }}
-                DATABASE_PORT=${{ secrets.DATABASE_PORT }}
-                DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-                DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"
-                DATABASE_URL=${{ secrets.DATABASE_URL }}
-                GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}
-                EOT
-
-                # Ajustar permissões
-                sudo chmod 644 $WORKDIR/.env
-                sudo chown -R $EC2_USER:$EC2_USER $WORKDIR
-
+                rm -rf backend
+                mkdir -p /home/ubuntu/backend
+                              
+                # Extrair o arquivo tar.gz
+                tar -xzf backend.tar.gz -C backend
+                              
+                # Verificar se o arquivo docker-compose.yml está presente
+                ls -l /home/ubuntu/backend/docker-compose.yml
+                              
+                # Garantir permissões corretas no diretório
+                sudo chown -R $EC2_USER:$EC2_USER /home/ubuntu/backend
+                sudo chmod -R 755 /home/ubuntu/backend
+                              
+                # Criar o .env com as variáveis de ambiente seguras
+                echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" > .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo 'DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"' >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                echo "GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                              
                 # Construir e rodar os containers
-                cd $WORKDIR
-                sudo docker-compose up --build -d
+                docker-compose up --build -d
                 EOF
