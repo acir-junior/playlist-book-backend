@@ -57,15 +57,17 @@ jobs:
                 sudo chown -R $EC2_USER:$EC2_USER /home/ubuntu/backend
                 sudo chmod -R 755 /home/ubuntu/backend
                               
-                # Criar o .env com as variáveis de ambiente seguras
-                echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" > .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo 'DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"' >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
-                echo "GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}" >> .env | sudo tee -a /home/ubuntu/backend/.env > /dev/null
+                # Criar o .env com as variáveis de ambiente
+                cat <<EOT | sudo tee $WORKDIR/.env > /dev/null
+                echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" > .env
+                echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+                echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+                echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> .env
+                echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+                echo 'DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"' >> .env
+                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+                echo "GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}" >> .env
+                EOT
                               
                 # Construir e rodar os containers
                 docker-compose up --build -d
