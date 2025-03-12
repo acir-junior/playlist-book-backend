@@ -22,9 +22,9 @@ jobs:
                 EC2_HOST: ${{ secrets.EC2_HOST }}
                 EC2_USER: ${{ secrets.EC2_USER }}
               run: |
-                echo "$SSH_PRIVATE_KEY" > private_key.pem
-                chmod 600 private_key.pem
-                scp -i private_key.pem -o StrictHostKeyChecking=no backend.tar.gz $EC2_USER@$EC2_HOST:/home/$EC2_USER/
+                echo "$SSH_PRIVATE_KEY" > key_server.pem
+                chmod 600 key_server.pem
+                scp -i key_server.pem -o StrictHostKeyChecking=no backend.tar.gz $EC2_USER@$EC2_HOST:/home/$EC2_USER/
             
             - name: Conectar ao servidor EC2 aws e configurar backend
               env:
@@ -32,7 +32,7 @@ jobs:
                 EC2_HOST: ${{ secrets.EC2_HOST }}
                 EC2_USER: ${{ secrets.EC2_USER }}
               run: |
-                ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+                ssh -i key_server.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
                 # Navegar para a pasta do backend
                 cd /home/$EC2_USER/
 
