@@ -77,5 +77,8 @@
     "moduleNameMapper": {
       "^@core/(.*)$": "<rootDir>/core/$1"
     }
+  },
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
   }
 }

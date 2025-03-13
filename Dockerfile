@@ -24,7 +24,7 @@ RUN npm run build
 # RUN mv .env.example .env
 
 # Exponha a porta que a aplicação vai usar
-EXPOSE 3000
+EXPOSE 7000
 
 # Comando para iniciar a aplicação
 CMD ["npm", "run", "start:dev"]
