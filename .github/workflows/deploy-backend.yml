@@ -33,11 +33,9 @@ jobs:
                 EC2_USER: ${{ secrets.EC2_USER }}
               run: |
                 ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-                
-                echo "Diretório atual: $(pwd)"
 
                 # Navegar para o diretório correto
-                cd /home/$EC2_USER/ || { echo "Erro: Não foi possível acessar /home/$EC2_USER/"; exit 1; }
+                cd /home/ubuntu/ || { echo "Erro: Não foi possível acessar /home/ubuntu/"; exit 1; }
 
                 # Verificar se o arquivo foi transferido corretamente
                 if [ ! -f backend.tar.gz ]; then
