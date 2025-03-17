@@ -44,7 +44,7 @@ jobs:
                 fi
 
                 # Parar e remover containers existentes
-                docker-compose down
+                docker-compose down backend
 
                 # Remover arquivos antigos e extrair os novos
                 sudo rm -rf backend
