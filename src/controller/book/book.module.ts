@@ -4,7 +4,7 @@ import { SearchAllUseCase } from "@core/application/usecase/book/search-all.usec
 import { SearchBookByApiUseCase } from "@core/application/usecase/book/search-by-api.usecase";
 import { SearchByIdBookUseCase } from "@core/application/usecase/book/search-by-id.usecase";
 import { UpdateBookUsecase } from "@core/application/usecase/book/update.usecase";
-import { AxiosHttp } from "@core/infra/http/axios.http";
+import { FetchHttp } from "@core/infra/http/fetch.http";
 import { BookRepository } from "@core/infra/repositories/book.repository";
 import { GoogleBookApiService } from "@core/infra/services/google-books/google-books-api.service";
 import { DynamicModule, Module } from "@nestjs/common";
@@ -15,7 +15,7 @@ import { RepositoriesModule } from "modules/repositories.module";
     imports: [
         RepositoriesModule,
         GoogleBooksApiModule,
-        AxiosHttp
+        FetchHttp
     ],
 })
 
@@ -68,7 +68,7 @@ export class BookModule {
                     useFactory: () => {
                         return new SearchBookByApiUseCase(
                             new GoogleBookApiService(
-                                new AxiosHttp()
+                                new FetchHttp()
                             )
                         );
                     }
