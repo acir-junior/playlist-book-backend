@@ -73,6 +73,8 @@ jobs:
                 DATABASE_SCHEMA="${{ secrets.DATABASE_SCHEMA }}"
                 DATABASE_URL=${{ secrets.DATABASE_URL }}
                 GOOGLE_BOOKS_KEY=${{ secrets.GOOGLE_BOOKS_KEY }}
+                REDIS_HOST=${{ secrets.REDIS_HOST }}
+                REDIS_PORT=${{ secrets.REDIS_PORT }}
                 EOT
 
                 # Construir e rodar os containers

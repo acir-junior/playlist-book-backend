@@ -10,6 +10,7 @@ import { CreateBookDto } from "./dto/create.dto";
 import { BookByApiMap } from "@core/infra/mappers/book-by-api.map";
 import { UpdateBookDto } from "./dto/update.dto";
 import { Response } from "express";
+import { TranslateDescriptionUseCase } from "@core/application/usecase/book/translate-description.usecase";
 
 @Controller('book')
 export class BookController {
@@ -27,6 +28,8 @@ export class BookController {
         private readonly _searchBookByApiUseCase: SearchBookByApiUseCase,
         @Inject('UpdateBookUsecase')
         private readonly _updateBookUseCase: UpdateBookUsecase,
+        @Inject('TranslateDescriptionUseCase')
+        private readonly _translateDescriptionUseCase: TranslateDescriptionUseCase
     ) {}
 
     @Post('create')
@@ -77,5 +80,15 @@ export class BookController {
     ) {
         await this._updateBookUseCase.execute({ id, ...body });
         return res.status(200).json({ message: 'Livro atualizado com sucesso!' });
+    }
+
+    @Put('update-description/:id')
+    async updateDescription(
+        @Param('id') id: string,
+        @Body() body: UpdateBookDto,
+        @Res() res: Response
+    ) {
+        const description = await this._translateDescriptionUseCase.execute({ id, ...body });
+        return res.status(200).json({ data: description });
     }
 }

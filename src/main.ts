@@ -13,7 +13,7 @@ async function bootstrap() {
     rateLimit({
       windowMs: 5 * 60 * 1000, // 5 minutes
       max: 500, // limit each IP to 500 requests per windowMs
-      message: 'Muitas requisições deste IP, tente novamente após 5 minutos'
+      message: 'Você excedeu o limite de requisições, tente novamente após 5 minutos'
     })
   )
 
