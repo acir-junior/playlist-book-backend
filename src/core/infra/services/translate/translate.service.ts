@@ -18,7 +18,7 @@ export class TranslateService implements TranslateRepository {
         const text = await this._chunkDescription(description, target);
         await this._redisAdapter.set(cacheKey, text, 86400);
 
-        return `${text.substring(0, 1573)}...`;
+        return `${text.substring(0, 1573)} ...`;
     }
 
     private async _chunkDescription(
