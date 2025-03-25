@@ -44,7 +44,7 @@ jobs:
                 fi
 
                 # Parar e remover containers existentes
-                docker-compose -f /home/ubuntu/backend/docker-compose.yml down backend
+                docker-compose -f /home/ubuntu/backend/docker-compose.yml down backend -v
 
                 # Remover arquivos antigos e extrair os novos
                 sudo rm -rf backend
