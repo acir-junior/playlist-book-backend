@@ -4,6 +4,8 @@ import { config } from "dotenv";
 
 export class GoogleBookApiService implements GoogleBooksApiRepository {
 
+    private readonly _url: string = 'https://www.googleapis.com/books/v1/volumes';
+
     constructor(
         private _requester: IRequester
     ) {}
@@ -14,7 +16,7 @@ export class GoogleBookApiService implements GoogleBooksApiRepository {
     }
 
     async search(param: string): Promise<any> {
-        const books = await this._requester.get(`https://www.googleapis.com/books/v1/volumes?q=${param}&key=${this._key()}`);
+        const books = await this._requester.get(`${this._url}?q=${param}&key=${this._key()}`);
         return books.items;
     }
 }

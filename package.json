@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
+    "@nestjs/cache-manager": "^3.0.0",
     "@nestjs/class-validator": "^0.13.4",
     "@nestjs/common": "^11.0.10",
     "@nestjs/config": "^4.0.0",
@@ -30,11 +31,16 @@
     "@nestjs/testing": "^11.0.10",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^6.3.1",
+    "@vitalets/google-translate-api": "^9.2.1",
     "axios": "^1.7.9",
+    "cache-manager": "^6.4.1",
+    "cache-manager-redis-store": "^3.0.1",
     "dotenv": "^16.4.7",
     "express-rate-limit": "^7.5.0",
+    "ioredis": "^5.6.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "translate": "^3.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
