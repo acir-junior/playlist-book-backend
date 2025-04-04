@@ -27,7 +27,7 @@ jobs:
             - name: Core Business Rules Validation
               id: core_check
               run: |
-                # Acomplamentos indevidos na pasta core
+                # Acoplamentos indevidos na pasta core
                 CORE_VIOLATIONS=$(find src/core -type f \( -name "*.ts" -o -name "*.js" \) \
                 -exec grep -lE "from ['\"]src/(application|domain|infra)|@Injectable|@Controller" {} + || true)
 
