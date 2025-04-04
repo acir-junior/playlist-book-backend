@@ -65,9 +65,9 @@ jobs:
                     ${nestAnalysis}
                     ## 📈 Estatísticas
                     - ${diff.split('\n').length} linhas de código alteradas
-                    - ${(diff.match(/\+g) || []).length} linhas adicionadas
-                    - ${(diff.match(/\+g) || []).length} linhas adicionadas
-                    - ${(diff.match(/\-g) || []).length} linhas removidas
+                    - ${(diff.match(/\+/g) || []).length} linhas adicionadas
+                    - ${(diff.match(/\+/g) || []).length} linhas adicionadas
+                    - ${(diff.match(/\-/g) || []).length} linhas removidas
                   `;
 
                   await github.rest.issues.createComment({
