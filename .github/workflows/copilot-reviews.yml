@@ -33,7 +33,7 @@ jobs:
                     echo "::warning:: Possíveis violações na camada core:"
                     echo "$CORE_VIOLATIONS"
                     echo "core_violations=true" >> $GITHUB_OUTPUT
-                    echo "CORE_REPORT=$(echo -e '## 🔴 Violações de Arquitetura\n'$CORE_VIOLATIONS | jq -Rs .)" >> $GITHUB_OUTPUT)
+                    echo "CORE_REPORT=$(echo -e '## 🔴 Violações de Arquitetura\n'$CORE_VIOLATIONS | jq -Rs .)" >> $GITHUB_OUTPUT
                 else
                     echo "core_violations=false" >> $GITHUB_OUTPUT
                     echo "CORE_REPORT=$(echo -e '## ✅ Nenhuma violação encontrada na camada core' | jq -Rs .)" >> $GITHUB_OUTPUT
