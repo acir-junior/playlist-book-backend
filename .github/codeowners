@@ -1,0 +1,8 @@
+# Camada de domínio (mantenha limpa!)
+/src/core/ @acir-junior # ✅ Lembre-se de testar!
+
+# Controllers (valide inputs!)
+/src/controllers/ @acir-junior # 🛡️ Checar sanitização
+
+# Módulos (evite acoplamento)
+/src/modules/ @acir-junior # 🔗 Manter interfaces claras

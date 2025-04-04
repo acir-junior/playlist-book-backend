@@ -1,0 +1,82 @@
+name: Copilot PR Reviews
+on: [pull_request]
+
+permissions:
+    pull-requests: write
+    contents: read
+    issues: write
+
+jobs:
+    analyze:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '22'
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run ESLint
+              run: npm run lint -- --max-warnings=0
+
+            - name: Core Business Rules Validation
+              id: core_check
+              run: |
+                # Acoplamentos indevidos na pasta core
+                CORE_VIOLATIONS=$(find src/core -type f \( -name "*.ts" -o -name "*.js" \) \
+                -exec grep -lE "(from ['\"]src/(application|domain|infra))|(@Injectable)|(@Controller)" {} + || true)
+                if [ -n "$CORE_VIOLATIONS" ]; then
+                    echo "::warning:: Possíveis violações na camada core:"
+                    echo "$CORE_VIOLATIONS"
+                    echo "core_violations=true" >> $GITHUB_OUTPUT
+                    echo "CORE_REPORT=$(echo -e '## 🔴 Violações de Arquitetura\n'$CORE_VIOLATIONS | jq -Rs .)" >> $GITHUB_OUTPUT
+                else
+                    echo "core_violations=false" >> $GITHUB_OUTPUT
+                    echo "CORE_REPORT=$(echo -e '## ✅ Nenhuma violação encontrada na camada core' | jq -Rs .)" >> $GITHUB_OUTPUT
+                fi
+
+            - name: Generate Full Report
+              uses: actions/github-script@v6
+              env:
+                CORE_REPORT: ${{ steps.core_check.outputs.CORE_REPORT }}
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                  const { data: diff } = await github.rest.pulls.get({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      pull_number: context.payload.pull_request.number,
+                      mediaType: { format: 'diff' },
+                  });
+                
+                  const nestAnalysis = `
+                    ## 🔍 Análise de Código
+                    ${diff.includes('@Controller') ? '✅ Novos Controllers encontrados' : '❌ Nenhum novo Controller encontrado'}
+                    ${diff.includes('@Injectable') ? '✅ Novos Serviços encontrados' : '❌ Nenhum novo Serviço encontrado'}
+                    ${diff.includes('@Module') ? '✅ Novos Módulos encontrados' : '❌ Nenhum novo Módulo encontrado'}
+                  `;
+
+                  const fullReport = `
+                    ## 🚀 Relatório Completo
+                    ${process.env.CORE_REPORT}
+                    ${nestAnalysis}
+                    ## 📈 Estatísticas
+                    - ${diff.split('\n').filter(line => !line.startsWith('diff --git') && !line.startsWith('index') && !line.startsWith('---') && !line.startsWith('+++') && !line.startsWith('@@')).length} linhas de código alteradas
+                    - ${(diff.match(/\+/g) || []).length} linhas adicionadas
+                    - ${(diff.match(/\-/g) || []).length} linhas removidas
+                  `;
+
+                  await github.rest.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: context.payload.pull_request.number,
+                      body: fullReport,
+                  });
+              
+
+            
