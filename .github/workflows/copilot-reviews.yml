@@ -1,6 +1,11 @@
 name: Copilot PR Reviews
 on: [pull_request]
 
+permissions:
+    pull-requests: write
+    contents: read
+    issues: write
+
 jobs:
     analyze:
         runs-on: ubuntu-latest
@@ -41,6 +46,7 @@ jobs:
               env:
                 CORE_REPORT: ${{ steps.core_check.outputs.CORE_REPORT }}
               with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
                 script: |
                   const { data: diff } = await github.rest.pulls.get({
                       owner: context.repo.owner,
