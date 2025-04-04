@@ -27,10 +27,9 @@ jobs:
             - name: Core Business Rules Validation
               id: core_check
               run: |
-                # Acomplamentos indevidos na pasta core
+                # Acoplamentos indevidos na pasta core
                 CORE_VIOLATIONS=$(find src/core -type f \( -name "*.ts" -o -name "*.js" \) \
-                -exec grep -lE "from ['\"]src/(application|domain|infra)|@Injectable|@Controller" {} + || true)
-
+                -exec grep -lE "(from ['\"]src/(application|domain|infra))|(@Injectable)|(@Controller)" {} + || true)
                 if [ -n "$CORE_VIOLATIONS" ]; then
                     echo "::warning:: Possíveis violações na camada core:"
                     echo "$CORE_VIOLATIONS"
@@ -67,7 +66,7 @@ jobs:
                     ${process.env.CORE_REPORT}
                     ${nestAnalysis}
                     ## 📈 Estatísticas
-                    - ${diff.split('\n').length} linhas de código alteradas
+                    - ${diff.split('\n').filter(line => !line.startsWith('diff --git') && !line.startsWith('index') && !line.startsWith('---') && !line.startsWith('+++') && !line.startsWith('@@')).length} linhas de código alteradas
                     - ${(diff.match(/\+/g) || []).length} linhas adicionadas
                     - ${(diff.match(/\-/g) || []).length} linhas removidas
                   `;
