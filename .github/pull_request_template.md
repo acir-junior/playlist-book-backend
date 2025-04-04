@@ -1,6 +1,5 @@
 # Descrição das mudanças feitas
 
-<!-- O copilot preencherá automaticamente -->
 /copilot-summary
 
 ## Tipo de Mudança
