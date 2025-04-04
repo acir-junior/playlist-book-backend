@@ -66,7 +66,7 @@ jobs:
                     ${process.env.CORE_REPORT}
                     ${nestAnalysis}
                     ## 📈 Estatísticas
-                    - ${diff.split('\n').length} linhas de código alteradas
+                    - ${diff.split('\n').filter(line => !line.startsWith('diff --git') && !line.startsWith('index') && !line.startsWith('---') && !line.startsWith('+++') && !line.startsWith('@@')).length} linhas de código alteradas
                     - ${(diff.match(/\+/g) || []).length} linhas adicionadas
                     - ${(diff.match(/\-/g) || []).length} linhas removidas
                   `;
