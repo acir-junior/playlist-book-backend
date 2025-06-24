@@ -8,7 +8,7 @@ export interface IBook extends IGeneric {
     author?: string;
     description?: string;
     playlistId?: string;
-    plalists?: IPlaylist[];
+    playlists?: IPlaylist[];
 }
 
 export class Book extends GenericEntity<IBook> {

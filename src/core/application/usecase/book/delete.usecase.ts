@@ -1,6 +1,6 @@
-import { Repository } from "core/application/repositories/repository.interface";
-import { Book } from "core/domain/entities/book.entity";
+import { Repository } from "@core/application/repositories/repository.interface";
 import IUseCase from "../usecase.interface";
+import { Book } from "@core/domain/entities/book.entity";
 
 export class DeleteBookUseCase implements IUseCase<string> {
 

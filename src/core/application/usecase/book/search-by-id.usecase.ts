@@ -1,6 +1,6 @@
-import { Repository } from "core/application/repositories/repository.interface";
+import { Repository } from "@core/application/repositories/repository.interface";
 import IUseCase from "../usecase.interface";
-import { Book } from "core/domain/entities/book.entity";
+import { Book } from "@core/domain/entities/book.entity";
 
 export type SearchBook = {
     id: string;
